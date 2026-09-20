@@ -1,0 +1,8 @@
+@import "tailwindcss";
+:root { --blue:#0066D6; --green:#0A8F2E; --ink:#071120; --paper:#f6f9fc; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Arial, Helvetica, sans-serif; }
+::selection { background:#0066D6; color:white; }
+.grid-lines { background-image:linear-gradient(rgba(255,255,255,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px); background-size:56px 56px; }
+.text-balance { text-wrap:balance; }
