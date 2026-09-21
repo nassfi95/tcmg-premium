@@ -17,6 +17,6 @@ export const products = ['Hoodie violet', 'Hoodie blanc', 'T-shirt violet', 'T-s
 export const orderUrl = (product: string) => `mailto:${club.email}?subject=${encodeURIComponent(`Commande Boutique TCMG — ${product}`)}`;
 export const organisation = [
   ['Sandrine Poirier', 'Présidente', true], ['Philippe Matos', 'Vice-président', true], ['Rosa Boumadi', 'Trésorière', true], ['Murielle Fufait', 'Secrétaire', true], ['Gia Han Lam', 'Responsable Communication', true], ['Céline Decrawer', 'Responsable Événementiel', true], ['Savanah Thirion', 'Représentante de Section', true],
-  ['Rudy Coco', 'Coach', true], ['Grégoire Coulaud', 'Coach', true], ['Cédric Pouget', 'Coach', true], ['Nathan Dufait', 'Éducateur', false], ['Zincir Ekin', 'Éducateur', false], ['Benabdelmoumene Mehdi', 'Éducateur', false], ['Nassim Saifi', 'Éducateur', false],
+  ['Rudy Coco', 'Coach', true], ['Grégoire Coulaud', 'Coach', true], ['Cédric Pouget', 'Coach', true], ['Nathan Dufait', 'Éducateur', true], ['Mehdi Benabdelmoumene', 'Éducateur', false], ['Ekin Zincir', 'Éducateur', false], ['Nassim Saifi', 'Éducateur', false],
 ] as const;
 export const partners = ['FFT', 'Fête le Mur', 'Ville de Goussainville', 'BNP Paribas', 'ECOSPORT Tennis', 'CITEOS', 'Comité du Val-d’Oise', 'Training Addict'];
