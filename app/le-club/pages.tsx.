@@ -1,0 +1,88 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { Header, Footer } from '@/components/site-shell';
+
+export default function LeClub() {
+  return (
+    <>
+      <Header />
+
+      <main className="pt-20">
+        <section className="relative overflow-hidden bg-[#062a59] px-5 py-28 text-white">
+          <div className="mx-auto max-w-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <p className="uppercase tracking-[0.3em] text-[#72d68b] text-sm">
+                Le Club
+              </p>
+
+              <h1 className="mt-5 text-5xl font-black md:text-7xl">
+                Une histoire,
+                <br />
+                une passion.
+              </h1>
+
+              <p className="mt-6 max-w-2xl text-lg text-white/75 leading-8">
+                Depuis 1983, le Tennis Club Municipal de Goussainville accueille
+                tous les passionnés, du premier échange jusqu'à la compétition.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="px-5 py-24">
+          <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2 lg:items-center">
+            <div>
+              <h2 className="text-4xl font-black text-[#062a59]">
+                Un club pour tous.
+              </h2>
+
+              <p className="mt-6 leading-8 text-slate-600">
+                Le TCMG réunit enfants, adultes, compétiteurs et pratiquants
+                loisirs dans une ambiance conviviale où la progression va de
+                pair avec le plaisir de jouer.
+              </p>
+            </div>
+
+            <img
+              src="https://images.unsplash.com/photo-1542144582-1ba00456b5e3?auto=format&fit=crop&w=1200&q=80"
+              className="rounded-[2rem] shadow-2xl"
+            />
+          </div>
+        </section>
+
+        <section className="bg-[#edf6f0] px-5 py-24">
+          <div className="mx-auto max-w-7xl">
+            <h2 className="text-4xl font-black text-[#062a59]">
+              Nos valeurs
+            </h2>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {[
+                ['Convivialité', 'Un club ouvert à tous.'],
+                ['Progression', 'Un accompagnement adapté à chaque niveau.'],
+                ['Engagement', 'Le sport comme vecteur d’éducation.'],
+              ].map(([title, text]) => (
+                <div
+                  key={title}
+                  className="rounded-[2rem] bg-white p-8 shadow-lg"
+                >
+                  <h3 className="text-2xl font-bold text-[#062a59]">
+                    {title}
+                  </h3>
+
+                  <p className="mt-4 text-slate-600 leading-7">{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  );
+}
