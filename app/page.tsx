@@ -1,42 +1,19 @@
 'use client';
-
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Arrow } from '@/components/icons';
 import { Footer, Header } from '@/components/site-shell';
-
-const univers = [
-  { no: '01', title: 'Tennis', text: 'Du premier échange aux matchs qui comptent.', href: '/tennis', tone: 'blue' },
-  { no: '02', title: 'Padel', text: 'Un jeu rapide, inclusif et intensément collectif.', href: '/padel', tone: 'orange' },
-  { no: '03', title: 'Fête le Mur', text: 'Le sport comme levier d’éducation.', href: '/fete-le-mur', tone: 'lime' },
+import { stats } from '@/content/site';
+const offers = [
+  ['École de tennis', 'Apprendre les bases, prendre confiance et aimer jouer dès 3 ans.', '/tennis'],
+  ['Tennis adultes', 'Des cours adaptés à chaque niveau, dans une ambiance accueillante.', '/tennis'],
+  ['Fête le Mur', 'Le tennis comme outil d’éducation, de découverte et de partage.', '/fete-le-mur'],
 ];
-const photos = ['Échanges', 'Transmission', 'Énergie', 'Partage', 'Le collectif', 'Le plaisir'];
-
-export default function Home() {
-  return <><Header /><main>
-    <section className="hero relative isolate min-h-screen overflow-hidden px-5 pb-12 pt-32 text-white">
-      <div className="hero-orb hero-orb-one" /><div className="hero-orb hero-orb-two" />
-      <div className="court-lines absolute inset-x-[7%] top-24 bottom-[-24%] -z-10 rotate-[-10deg] opacity-35" />
-      <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }} className="mx-auto flex min-h-[calc(100vh-11rem)] max-w-7xl flex-col justify-end">
-        <p className="eyebrow text-[#d8ff57]">TENNIS CLUB MUNICIPAL DE GOUSSAINVILLE</p>
-        <h1 className="mt-5 max-w-5xl text-balance text-6xl font-black leading-[.86] tracking-[-.075em] sm:text-7xl lg:text-9xl">Ici, on joue<br /><span className="italic font-medium text-[#d8ff57]">plus grand.</span></h1>
-        <div className="mt-9 flex flex-wrap gap-3"><Link className="button button-lime" href="/le-club">Découvrir le club <Arrow /></Link><Link className="button button-ghost" href="/contact">Nous contacter</Link></div>
-        <div className="mt-16 flex max-w-3xl flex-wrap gap-x-12 gap-y-3 border-t border-white/25 pt-5 text-sm font-semibold text-white/65"><span>8 courts</span><span>400+ licenciés</span><span>Une énergie commune</span></div>
-      </motion.div>
-    </section>
-    <section className="bg-[#f6f4ee] px-5 py-24"><div className="mx-auto max-w-7xl">
-      <div className="max-w-2xl"><p className="eyebrow text-[#6444d9]">NOS UNIVERS</p><h2 className="headline mt-4">Trois façons de vivre le club.</h2></div>
-      <div className="mt-12 grid gap-4 md:grid-cols-3">{univers.map((item, i) => <motion.article whileHover={{ y: -7 }} key={item.title} className={`universe-card universe-${item.tone}`}>
-        <div className="flex items-start justify-between"><span className="text-sm font-bold opacity-70">{item.no}</span><span className="ball ball-small" /></div><div><h3>{item.title}</h3><p>{item.text}</p><Link href={item.href}>Explorer <Arrow /></Link></div>
-      </motion.article>)}</div>
-    </div></section>
-    <section className="bg-[#111426] px-5 py-24 text-white"><div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.82fr_1.18fr]">
-      <div><p className="eyebrow text-[#d8ff57]">FÊTE LE MUR</p><h2 className="headline mt-4">Bien plus qu’un terrain de jeu.</h2><p className="mt-6 max-w-md text-lg leading-8 text-white/65">Au TCMG, le sport ouvre des portes. Chaque activité est une occasion de se rencontrer, d’apprendre et de prendre confiance.</p><Link href="/fete-le-mur" className="button button-lime mt-8">Notre engagement <Arrow /></Link></div>
-      <div className="photo-panel photo-panel-dark"><span>FÊTE LE MUR</span><div className="panel-copy"><b>Grandir<br />ensemble.</b><small>Des expériences qui restent.</small></div><i className="panel-stroke" /></div>
-    </div></section>
-    <section className="px-5 py-24"><div className="mx-auto max-w-7xl"><div className="flex flex-wrap items-end justify-between gap-5"><div><p className="eyebrow text-[#6444d9]">EN IMAGES</p><h2 className="headline mt-4">L’énergie TCMG.</h2></div><Link href="/galerie" className="text-link">Voir la galerie <Arrow /></Link></div>
-      <div className="gallery-grid mt-12">{photos.map((photo, i) => <Link key={photo} href="/galerie" className={`gallery-tile gallery-${i + 1}`}><span>{photo}</span><b>↗</b></Link>)}</div>
-    </div></section>
-    <section className="px-5 pb-24"><div className="mx-auto max-w-7xl rounded-[2.5rem] bg-[#6444d9] p-8 text-white md:p-14"><p className="eyebrow text-[#d8ff57]">PRÊT À JOUER ?</p><div className="mt-5 flex flex-wrap items-end justify-between gap-8"><h2 className="max-w-3xl text-4xl font-black tracking-[-.06em] md:text-6xl">Votre prochain<br /><i className="font-medium">échange</i> commence ici.</h2><Link href="/contact" className="button bg-white text-[#372499]">Nous rejoindre <Arrow /></Link></div></div></section>
-  </main><Footer /></>;
-}
+export default function Home() { const reduced = useReducedMotion(); return <><Header/><main>
+  <section className="hero-home relative isolate flex min-h-[720px] items-end overflow-hidden px-5 pb-14 pt-32 text-white"><div className="tennis-court absolute inset-0 -z-10"/><motion.div initial={reduced ? false : {opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:.75}} className="mx-auto w-full max-w-7xl"><p className="eyebrow text-[#72d68b]">TENNIS CLUB MUNICIPAL DE GOUSSAINVILLE</p><h1 className="mt-5 max-w-5xl text-balance text-5xl font-black leading-[.9] tracking-[-.07em] sm:text-7xl lg:text-8xl">Le tennis<br/><em className="font-medium text-[#72d68b]">pour tous.</em></h1><p className="mt-6 max-w-xl text-lg leading-8 text-white/80">Depuis 1983, le TCMG fait vivre le tennis à Goussainville, avec exigence, plaisir et convivialité.</p><div className="mt-9 flex flex-wrap gap-3"><Link className="button button-green" href="/le-club">Découvrir le club <Arrow/></Link><Link className="button button-ghost" href="/contact">Nous contacter</Link></div></motion.div></section>
+  <section className="border-y border-slate-100 bg-white px-5 py-8"><div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4">{stats.map(s=><div key={s.label} className="border-l-2 border-[#2FA84F] pl-4"><strong className="block text-2xl font-black tracking-[-.05em] text-[#0057B8]">{s.value}</strong><span className="text-sm font-semibold text-slate-600">{s.label}</span></div>)}</div></section>
+  <section className="px-5 py-24"><div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.86fr_1.14fr]"><div><p className="eyebrow text-[#2FA84F]">LE CLUB</p><h2 className="headline mt-4">Jouer, progresser, se retrouver.</h2></div><div><p className="text-lg leading-8 text-slate-600">École de tennis, pratique adultes, compétition ou premiers échanges : chaque membre trouve sa place au TCMG. Notre équipe accompagne les joueurs avec attention, dans un club où la progression va de pair avec le plaisir de se retrouver.</p><Link href="/le-club" className="text-link mt-7 text-[#0057B8]">Connaître le club <Arrow/></Link></div></div></section>
+  <section className="bg-[#edf6f0] px-5 py-24"><div className="mx-auto max-w-7xl"><p className="eyebrow text-[#2FA84F]">NOS PRATIQUES</p><h2 className="headline mt-4">Une place pour chaque envie.</h2><div className="mt-12 grid gap-4 md:grid-cols-3">{offers.map(([title,text,href], index)=><motion.article whileHover={reduced ? undefined : {y:-6}} key={title} className="offer-card"><span>0{index+1}</span><h3>{title}</h3><p>{text}</p><Link href={href}>Explorer <Arrow/></Link></motion.article>)}</div></div></section>
+  <section className="bg-[#0057B8] px-5 py-24 text-white"><div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2"><div><p className="eyebrow text-[#72d68b]">FÊTE LE MUR</p><h2 className="headline mt-4">Bien plus qu’un terrain de jeu.</h2></div><div><p className="text-lg leading-8 text-white/80">Le tennis devient un outil d’éducation, de découverte et de partage. Activités nature, jardinage, cuisine, sorties et jeux collectifs prolongent l’expérience au-delà du court.</p><Link href="/fete-le-mur" className="button button-green mt-8">Découvrir Fête le Mur <Arrow/></Link></div></div></section>
+  <section className="px-5 py-24"><div className="mx-auto max-w-7xl rounded-[2rem] bg-[#062a59] p-8 text-white md:p-14"><p className="eyebrow text-[#72d68b]">UN PROJET, UNE QUESTION ?</p><div className="mt-5 flex flex-wrap items-end justify-between gap-8"><h2 className="max-w-3xl text-4xl font-black tracking-[-.06em] md:text-6xl">Votre prochain<br/><em className="font-medium">échange</em> commence ici.</h2><Link href="/contact" className="button button-green">Nous rejoindre <Arrow/></Link></div></div></section>
+ </main><Footer/></>; }
