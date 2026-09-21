@@ -60,6 +60,20 @@ export function Header() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+  useEffect(() => {
+  if (open) {
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+  } else {
+    document.body.style.overflow = '';
+    document.body.style.touchAction = '';
+  }
+
+  return () => {
+    document.body.style.overflow = '';
+    document.body.style.touchAction = '';
+  };
+}, [open]);
 
   const previews = [
     "https://images.unsplash.com/photo-1542144582-1ba00456b5e3?auto=format&fit=crop&w=900&q=80",
