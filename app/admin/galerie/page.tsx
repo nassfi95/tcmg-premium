@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Header, Footer } from '@/components/site-shell';
 
@@ -25,6 +25,7 @@ export default function AdminGalerie() {
 
   const [caption, setCaption] = useState('');
   const [uploading, setUploading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch('/api/admin')
@@ -33,19 +34,23 @@ export default function AdminGalerie() {
   }, []);
 
   async function upload(file: File) {
-    setUploading(true);
+    try {
+      setUploading(true);
 
-    const fd = new FormData();
-    fd.append('file', file);
+      const fd = new FormData();
+      fd.append('file', file);
 
-    const uploadRes = await fetch('/api/upload', {
-      method: 'POST',
-      body: fd,
-    });
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: fd,
+      });
 
-    const uploadJson = await uploadRes.json();
+      if (!uploadRes.ok) {
+        throw new Error("Échec de l'envoi de l'image.");
+      }
 
-    if (uploadJson.url) {
+      const uploadJson = await uploadRes.json();
+
       const nextData = {
         ...data,
         photos: [
@@ -58,7 +63,7 @@ export default function AdminGalerie() {
         ],
       };
 
-      await fetch('/api/admin', {
+      const saveRes = await fetch('/api/admin', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -66,11 +71,19 @@ export default function AdminGalerie() {
         body: JSON.stringify(nextData),
       });
 
+      if (!saveRes.ok) {
+        throw new Error("Échec de l'enregistrement.");
+      }
+
       setData(nextData);
       setCaption('');
+      if (inputRef.current) inputRef.current.value = '';
+      alert('Photo publiée !');
+    } catch (e: any) {
+      alert(e.message || 'Erreur.');
+    } finally {
+      setUploading(false);
     }
-
-    setUploading(false);
   }
 
   return (
@@ -115,13 +128,13 @@ export default function AdminGalerie() {
                 </div>
 
                 <input
+                  ref={inputRef}
                   type="file"
                   accept="image/*"
                   className="hidden"
                   onChange={(e) => {
-                    if (e.target.files?.[0]) {
-                      upload(e.target.files[0]);
-                    }
+                    const file = e.target.files?.[0];
+                    if (file) upload(file);
                   }}
                 />
               </label>
