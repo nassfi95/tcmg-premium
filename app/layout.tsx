@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { AdminProvider } from '@/components/admin-provider';
 
 export const metadata: Metadata = {
   title: 'TCMG – Tennis Club Municipal de Goussainville',
@@ -10,14 +9,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="fr" suppressHydrationWarning>
-      <body>
-        <AdminProvider>{children}</AdminProvider>
-      </body>
+    <html lang="fr">
+      <body>{children}</body>
     </html>
   );
 }
