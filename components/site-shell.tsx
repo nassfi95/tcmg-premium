@@ -52,76 +52,47 @@ function Logo({ dark = false }: { dark?: boolean }) {
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  const previews = [
+    "https://images.unsplash.com/photo-1542144582-1ba00456b5e3?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1542144582-1ba00456b5e3?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=80",
+  ];
 
   return (
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'border-b border-slate-200 bg-white/95 backdrop-blur-xl shadow-sm'
+            ? 'bg-white/90 backdrop-blur-xl border-b border-slate-200'
             : 'bg-transparent'
         }`}
       >
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5">
           <Logo dark={scrolled} />
 
-          <nav
-            className={`hidden lg:flex items-center gap-7 text-sm font-semibold ${
-              scrolled ? 'text-[#062a59]' : 'text-white'
-            }`}
-          >
-            {links.map(([label, href]) => (
-              <Link
-                key={href}
-                href={href}
-                className="transition hover:text-[#2FA84F]"
-              >
-                {label}
-              </Link>
-            ))}
-
-            <Link
-              href="/contact"
-              className="rounded-full bg-[#2FA84F] px-5 py-3 text-white transition hover:scale-105 hover:shadow-lg"
-            >
-              Contact
-            </Link>
-          </nav>
-
           <button
-            onClick={() => setOpen(!open)}
-            aria-label="Menu"
-            className={`grid h-12 w-12 place-items-center rounded-full border transition ${
+            onClick={() => setOpen(true)}
+            className={`flex h-12 w-12 items-center justify-center rounded-full border ${
               scrolled
                 ? 'border-[#0057B8] text-[#0057B8]'
                 : 'border-white/40 text-white'
             }`}
           >
-            <div className="space-y-1">
-              <span
-                className={`block h-0.5 w-6 rounded-full bg-current transition ${
-                  open ? 'translate-y-[6px] rotate-45' : ''
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-6 rounded-full bg-current transition ${
-                  open ? 'opacity-0' : ''
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-6 rounded-full bg-current transition ${
-                  open ? '-translate-y-[6px] -rotate-45' : ''
-                }`}
-              />
-            </div>
+            ☰
           </button>
         </div>
       </header>
@@ -129,61 +100,91 @@ export function Header() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            className="fixed inset-0 z-[100] bg-[#041C44]/95 backdrop-blur-2xl lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: .35 }}
+            className="fixed inset-0 z-[100] bg-[#041C44]/96 backdrop-blur-2xl"
           >
-            <div className="flex h-full flex-col justify-between px-8 py-10 text-white">
+            <div className="mx-auto flex h-full max-w-7xl flex-col justify-between px-8 py-8 text-white">
+
               <div className="flex items-center justify-between">
                 <Logo />
 
                 <button
                   onClick={() => setOpen(false)}
-                  className="rounded-full border border-white/30 p-3 hover:bg-white/10"
+                  className="rounded-full border border-white/20 p-3 text-2xl"
                 >
                   ✕
                 </button>
               </div>
 
-              <nav className="my-10 flex flex-col gap-4">
-                {links.map(([label, href], i) => (
-                  <motion.div
-                    key={href}
-                    initial={{ opacity: 0, x: -25 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      href={href}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center justify-between border-b border-white/10 py-4 text-3xl font-black"
+              <div className="grid flex-1 items-center gap-12 lg:grid-cols-[1fr_.85fr]">
+
+                <nav className="flex flex-col gap-2">
+                  {links.map(([label, href], i) => (
+                    <motion.div
+                      key={href}
+                      initial={{ opacity: 0, x: -35 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * .05 }}
                     >
-                      {label}
-                      <span className="opacity-40">↗</span>
-                    </Link>
-                  </motion.div>
-                ))}
+                      <Link
+                        href={href}
+                        onClick={() => setOpen(false)}
+                        onMouseEnter={() => setActive(i)}
+                        className="group flex items-center justify-between border-b border-white/10 py-5 text-3xl font-black md:text-5xl"
+                      >
+                        <span className="flex items-center gap-5">
+                          <span className="text-base text-white/30">
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
+
+                          {label}
+                        </span>
+
+                        <span className="translate-x-0 opacity-30 transition group-hover:translate-x-2 group-hover:opacity-100">
+                          →
+                        </span>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </nav>
+
+                <motion.div
+                  key={active}
+                  initial={{ opacity: 0, scale: .95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="hidden overflow-hidden rounded-[2rem] lg:block"
+                >
+                  <img
+                    src={previews[active]}
+                    className="h-[520px] w-full object-cover"
+                  />
+                </motion.div>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-6">
+
+                <div>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#72d68b]">
+                    Suivez-nous
+                  </p>
+
+                  <div className="mt-3 flex gap-6 text-white/70">
+                    <a href="https://www.instagram.com/tcm_goussainville/">Instagram</a>
+                    <a href="https://www.tiktok.com">TikTok</a>
+                    <a href="https://www.facebook.com/ftcmg/">Facebook</a>
+                  </div>
+                </div>
 
                 <Link
                   href="/contact"
                   onClick={() => setOpen(false)}
-                  className="mt-5 rounded-full bg-[#2FA84F] px-6 py-4 text-center font-bold"
+                  className="rounded-full bg-[#2FA84F] px-6 py-4 font-bold"
                 >
                   Nous contacter
                 </Link>
-              </nav>
-
-              <div className="border-t border-white/10 pt-6">
-                <p className="text-xs uppercase tracking-[0.3em] text-[#72d68b]">
-                  Suivez-nous
-                </p>
-
-                <div className="mt-4 flex gap-6">
-                  <a href="https://www.instagram.com/tcm_goussainville/" target="_blank">Instagram</a>
-                  <a href="https://www.tiktok.com" target="_blank">TikTok</a>
-                  <a href="https://www.facebook.com/ftcmg/" target="_blank">Facebook</a>
-                </div>
               </div>
             </div>
           </motion.div>
@@ -192,6 +193,7 @@ export function Header() {
     </>
   );
 }
+
 
 export function SocialRail() {
   return (
