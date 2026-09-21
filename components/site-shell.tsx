@@ -21,12 +21,13 @@ function Logo({ dark = false }: { dark?: boolean }) {
   return (
     <Link href="/" className="flex items-center gap-3">
       <Image
-        src="/icon.svg"
-        alt="Logo TCMG"
-        width={56}
-        height={56}
-        className="rounded-2xl shadow-lg"
-      />
+  src="/logo-tcmg.png"
+  alt="Logo officiel TCMG"
+  width={60}
+  height={60}
+  priority
+  className="h-[60px] w-[60px] rounded-2xl object-contain"
+/>
 
       <div className="leading-none">
         <h1
