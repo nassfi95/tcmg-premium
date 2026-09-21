@@ -14,13 +14,13 @@ export async function POST(req: Request) {
 
     const blob = await put(file.name, file, {
       access: 'public',
-      token:
-        process.env.BLOB_READ_WRITE_TOKEN ??
-        process.env.GALLERY_BLOB_READ_WRITE_TOKEN,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      storeId: process.env.GALLERY_STORE_ID,
     });
 
     return NextResponse.json({ url: blob.url });
   } catch (e) {
+    console.error(e);
     return NextResponse.json({ error: 'Upload impossible.' }, { status: 500 });
   }
 }
