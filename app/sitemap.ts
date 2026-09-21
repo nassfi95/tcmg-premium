@@ -1,1 +1,3 @@
-import type { MetadataRoute } from 'next'; const paths=['','le-club','tennis','padel','fete-le-mur','galerie','boutique','contact']; export default function sitemap():MetadataRoute.Sitemap{return paths.map(path=>({url:`https://tcmg.fr/${path}`,lastModified:new Date(),changeFrequency:'weekly',priority:path===''?1:.7}));}
+import type { MetadataRoute } from 'next';
+const paths = ['', '/le-club', '/tennis', '/fete-le-mur', '/galerie', '/boutique', '/contact'];
+export default function sitemap(): MetadataRoute.Sitemap { return paths.map(path => ({ url: `https://tcmg-premium.vercel.app${path}`, lastModified: new Date(), changeFrequency: 'monthly', priority: path === '' ? 1 : .7 })); }
