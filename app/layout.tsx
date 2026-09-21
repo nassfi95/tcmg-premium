@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { SocialRail } from '@/components/site-shell';
 
 export const metadata: Metadata = {
   title: 'TCMG – Tennis Club Municipal de Goussainville',
@@ -14,7 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body>
+        {children}
+        <SocialRail />
+      </body>
     </html>
   );
 }
