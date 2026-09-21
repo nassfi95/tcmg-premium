@@ -38,20 +38,20 @@ export default function AdminGalerie() {
     const fd = new FormData();
     fd.append('file', file);
 
-    const res = await fetch('/api/upload', {
+    const uploadRes = await fetch('/api/upload', {
       method: 'POST',
       body: fd,
     });
 
-    const json = await res.json();
+    const uploadJson = await uploadRes.json();
 
-    if (json.url) {
-      const next = {
+    if (uploadJson.url) {
+      const nextData = {
         ...data,
         photos: [
           {
             id: crypto.randomUUID(),
-            url: json.url,
+            url: uploadJson.url,
             caption,
           },
           ...data.photos,
@@ -63,10 +63,10 @@ export default function AdminGalerie() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(next),
+        body: JSON.stringify(nextData),
       });
 
-      setData(next);
+      setData(nextData);
       setCaption('');
     }
 
@@ -81,29 +81,36 @@ export default function AdminGalerie() {
         <section className="bg-[#062a59] px-5 py-20 text-white">
           <div className="mx-auto max-w-7xl">
             <Link href="/admin" className="text-[#72d68b]">
-              ← Retour
+              ← Retour au tableau de bord
             </Link>
 
             <h1 className="mt-4 text-5xl font-black">Galerie</h1>
+            <p className="mt-3 text-white/75">
+              Les photos ajoutées ici apparaîtront automatiquement sur le site.
+            </p>
           </div>
         </section>
 
         <section className="px-5 py-16">
           <div className="mx-auto max-w-7xl">
-
             <div className="rounded-3xl bg-white p-8 shadow-xl">
               <input
                 value={caption}
                 onChange={(e) => setCaption(e.target.value)}
-                placeholder="Légende"
-                className="w-full rounded-2xl border px-5 py-4"
+                placeholder="Légende de la photo"
+                className="w-full rounded-2xl border border-slate-200 px-5 py-4"
               />
 
-              <label className="mt-6 flex cursor-pointer items-center justify-center rounded-3xl border-2 border-dashed border-[#2FA84F] bg-[#edf6f0] p-10">
+              <label className="mt-6 flex cursor-pointer items-center justify-center rounded-3xl border-2 border-dashed border-[#2FA84F] bg-[#edf6f0] p-10 hover:bg-[#dff0e5]">
                 <div className="text-center">
                   <p className="text-4xl">📸</p>
-                  <p className="mt-3 font-bold">
-                    {uploading ? 'Envoi...' : 'Choisir une photo'}
+
+                  <p className="mt-3 font-bold text-[#062a59]">
+                    {uploading ? 'Envoi en cours...' : 'Choisir une photo'}
+                  </p>
+
+                  <p className="text-sm text-slate-500">
+                    Depuis votre iPhone
                   </p>
                 </div>
 
@@ -128,11 +135,14 @@ export default function AdminGalerie() {
                 >
                   <img
                     src={photo.url}
+                    alt={photo.caption}
                     className="h-64 w-full object-cover"
                   />
 
                   <div className="p-4">
-                    <p>{photo.caption}</p>
+                    <p className="font-semibold text-[#062a59]">
+                      {photo.caption}
+                    </p>
                   </div>
                 </div>
               ))}
