@@ -5,19 +5,20 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Arrow } from '@/components/icons';
 import { Footer, Header } from '@/components/site-shell';
 import { stats } from '@/content/site';
+import { useAdminData } from '@/components/admin-provider';
 
 const offers = [
   {
     number: '01',
     title: 'École de tennis',
     text: 'Dès 3 ans, une progression adaptée pour apprendre, jouer et prendre confiance.',
-    href: '/tennis',
+    href: '/ecole-de-tennis',
   },
   {
     number: '02',
     title: 'Cours adultes',
     text: 'Débutants, loisirs ou perfectionnement : chacun trouve son rythme.',
-    href: '/tennis',
+    href: '/adultes',
   },
   {
     number: '03',
@@ -35,6 +36,7 @@ const gallery = [
 
 export default function Home() {
   const reduced = useReducedMotion();
+  const admin = useAdminData();
 
   return (
     <>
@@ -51,7 +53,7 @@ export default function Home() {
           <div className="absolute -right-24 top-28 -z-10 h-72 w-72 rounded-full bg-[#2FA84F]/20 blur-3xl" />
           <div className="absolute -left-24 bottom-20 -z-10 h-72 w-72 rounded-full bg-[#0066D6]/30 blur-3xl" />
 
-          <div className="mx-auto flex min-h-screen max-w-7xl items-center px-5 pt-24 pb-16">
+          <div className="mx-auto flex min-h-screen max-w-7xl items-center px-5 pt-32 pb-16">
             <motion.div
               initial={reduced ? false : { opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -192,13 +194,50 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-5 py-24 bg-white">
+        <section className="bg-white px-5 py-24">
+          <div className="mx-auto max-w-7xl">
+            <p className="eyebrow text-[#2FA84F]">ACTUALITÉS</p>
+
+            <h2 className="headline mt-4">
+              Les dernières nouvelles du club.
+            </h2>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-2">
+              {admin.events.length > 0 ? (
+                admin.events.map((event) => (
+                  <article
+                    key={event.id}
+                    className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm"
+                  >
+                    <p className="text-sm font-semibold text-[#2FA84F]">
+                      {event.date}
+                    </p>
+
+                    <h3 className="mt-3 text-2xl font-bold text-[#062a59]">
+                      {event.title}
+                    </h3>
+
+                    <p className="mt-4 text-slate-600 leading-7">
+                      {event.description}
+                    </p>
+                  </article>
+                ))
+              ) : (
+                <div className="rounded-[2rem] border border-dashed border-slate-300 p-10 text-center text-slate-500 md:col-span-2">
+                  Aucune actualité publiée pour le moment.
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white px-5 py-24">
           <div className="mx-auto max-w-7xl">
             <div className="flex items-end justify-between gap-6 flex-wrap">
               <div>
                 <p className="eyebrow text-[#2FA84F]">GALERIE</p>
                 <h2 className="headline mt-4">
-                  L'esprit du club en images.
+                  Le TCMG en images.
                 </h2>
               </div>
 
@@ -211,19 +250,21 @@ export default function Home() {
             </div>
 
             <div className="mt-12 grid gap-4 md:grid-cols-3">
-              {gallery.map((image, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={reduced ? undefined : { scale: 1.03 }}
-                  className="overflow-hidden rounded-[1.8rem]"
-                >
-                  <img
-                    src={image}
-                    alt="Galerie TCMG"
-                    className="h-80 w-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </motion.div>
-              ))}
+              {(admin.photos.length ? admin.photos.map((p) => p.url) : gallery)
+                .slice(0, 3)
+                .map((image, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={reduced ? undefined : { scale: 1.03 }}
+                    className="overflow-hidden rounded-[1.8rem]"
+                  >
+                    <img
+                      src={image}
+                      alt="Galerie TCMG"
+                      className="h-80 w-full object-cover transition-transform duration-500 hover:scale-110"
+                    />
+                  </motion.div>
+                ))}
             </div>
           </div>
         </section>
@@ -269,8 +310,11 @@ export default function Home() {
                 </h2>
 
                 <p className="mt-6 max-w-xl text-white/75">
-                  Envie de découvrir le club, de prendre un cours ou de
-                  rejoindre une équipe ? Contactez-nous dès aujourd'hui.
+                  {admin.contact.address || 'Complexe Maurice Baquet, Allée du 5 Décembre, 95190 Goussainville'}
+                  <br />
+                  {admin.contact.phone}
+                  <br />
+                  {admin.contact.email}
                 </p>
               </div>
 
