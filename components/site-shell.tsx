@@ -166,16 +166,112 @@ export function Header() {
                 </nav>
 
                 <motion.div
-                  key={active}
-                  initial={{ opacity: 0, scale: .95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="hidden overflow-hidden rounded-[2rem] lg:block"
-                >
-                  <img
-                    src={previews[active]}
-                    className="h-[520px] w-full object-cover"
-                  />
-                </motion.div>
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  transition={{ duration: 0.35 }}
+  className="fixed inset-0 z-[100] overflow-y-auto bg-[#041C44]/95 backdrop-blur-3xl"
+>
+  <div className="mx-auto flex min-h-screen max-w-7xl flex-col justify-between px-8 py-8 text-white">
+
+    <div className="flex items-center justify-between">
+      <Logo />
+
+      <button
+        onClick={() => setOpen(false)}
+        className="rounded-full border border-white/20 p-3 text-2xl transition hover:rotate-90 hover:bg-white/10"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div className="grid flex-1 items-center gap-12 py-10 lg:grid-cols-[1fr_.9fr]">
+
+      <nav className="flex flex-col">
+        {links.map(([label, href], i) => (
+          <motion.div
+            key={href}
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              delay: i * 0.06,
+              duration: 0.4,
+              ease: 'easeOut',
+            }}
+          >
+            <Link
+              href={href}
+              onClick={() => setOpen(false)}
+              onMouseEnter={() => setActive(i)}
+              className="group flex items-center justify-between border-b border-white/10 py-5 text-3xl font-black transition md:text-5xl"
+            >
+              <span className="flex items-center gap-5">
+                <span className="text-base text-white/30">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+
+                <span className="transition group-hover:translate-x-3">
+                  {label}
+                </span>
+              </span>
+
+              <span className="translate-x-0 text-white/30 transition-all group-hover:translate-x-3 group-hover:text-[#72d68b]">
+                →
+              </span>
+            </Link>
+          </motion.div>
+        ))}
+      </nav>
+
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.35 }}
+        className="hidden overflow-hidden rounded-[2.2rem] shadow-2xl lg:block"
+      >
+        <img
+          src={previews[active]}
+          alt="Aperçu"
+          className="h-[560px] w-full object-cover transition duration-500"
+        />
+      </motion.div>
+    </div>
+
+    <div className="border-t border-white/10 pt-6">
+      <div className="flex flex-wrap items-center justify-between gap-6">
+
+        <div>
+          <p className="text-xs uppercase tracking-[0.3em] text-[#72d68b]">
+            Suivez-nous
+          </p>
+
+          <div className="mt-3 flex gap-6 text-white/70">
+            <a href="https://www.instagram.com/tcm_goussainville/" target="_blank">
+              Instagram
+            </a>
+
+            <a href="https://www.tiktok.com" target="_blank">
+              TikTok
+            </a>
+
+            <a href="https://www.facebook.com/ftcmg/" target="_blank">
+              Facebook
+            </a>
+          </div>
+        </div>
+
+        <Link
+          href="/contact"
+          onClick={() => setOpen(false)}
+          className="rounded-full bg-[#2FA84F] px-7 py-4 font-bold transition hover:scale-105 hover:shadow-xl"
+        >
+          Nous contacter
+        </Link>
+      </div>
+    </div>
+  </div>
+</motion.div>
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-6">
