@@ -21,11 +21,11 @@ function Logo({ dark = false }: { dark?: boolean }) {
     <Link href="/" className="flex items-center gap-3">
       <Image
         src="/Tableau-de-32.pdf.png"
-        alt="TCMG"
-        width={58}
-        height={58}
+        alt="Logo TCMG"
+        width={60}
+        height={60}
         priority
-        className="h-[58px] w-[58px] rounded-2xl object-cover shadow-lg"
+        className="h-[60px] w-[60px] rounded-2xl object-cover shadow-xl"
       />
 
       <div className="leading-none">
@@ -56,7 +56,6 @@ export function Header() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
-
     window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', onScroll);
@@ -67,7 +66,7 @@ export function Header() {
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur-xl'
+            ? 'border-b border-slate-200 bg-white/95 backdrop-blur-xl shadow-sm'
             : 'bg-transparent'
         }`}
       >
@@ -75,7 +74,7 @@ export function Header() {
           <Logo dark={scrolled} />
 
           <nav
-            className={`hidden lg:flex items-center gap-6 text-sm font-semibold ${
+            className={`hidden lg:flex items-center gap-7 text-sm font-semibold ${
               scrolled ? 'text-[#062a59]' : 'text-white'
             }`}
           >
@@ -91,7 +90,7 @@ export function Header() {
 
             <Link
               href="/contact"
-              className="rounded-full bg-[#2FA84F] px-5 py-3 text-white transition hover:opacity-90"
+              className="rounded-full bg-[#2FA84F] px-5 py-3 text-white transition hover:scale-105 hover:shadow-lg"
             >
               Contact
             </Link>
@@ -108,17 +107,17 @@ export function Header() {
           >
             <div className="space-y-1">
               <span
-                className={`block h-0.5 w-6 bg-current transition ${
+                className={`block h-0.5 w-6 rounded-full bg-current transition ${
                   open ? 'translate-y-[6px] rotate-45' : ''
                 }`}
               />
               <span
-                className={`block h-0.5 w-6 bg-current transition ${
+                className={`block h-0.5 w-6 rounded-full bg-current transition ${
                   open ? 'opacity-0' : ''
                 }`}
               />
               <span
-                className={`block h-0.5 w-6 bg-current transition ${
+                className={`block h-0.5 w-6 rounded-full bg-current transition ${
                   open ? '-translate-y-[6px] -rotate-45' : ''
                 }`}
               />
@@ -141,7 +140,7 @@ export function Header() {
 
                 <button
                   onClick={() => setOpen(false)}
-                  className="rounded-full border border-white/30 p-3"
+                  className="rounded-full border border-white/30 p-3 hover:bg-white/10"
                 >
                   ✕
                 </button>
@@ -169,7 +168,7 @@ export function Header() {
                 <Link
                   href="/contact"
                   onClick={() => setOpen(false)}
-                  className="mt-4 rounded-full bg-[#2FA84F] px-6 py-4 text-center font-bold"
+                  className="mt-5 rounded-full bg-[#2FA84F] px-6 py-4 text-center font-bold"
                 >
                   Nous contacter
                 </Link>
@@ -180,16 +179,10 @@ export function Header() {
                   Suivez-nous
                 </p>
 
-                <div className="mt-3 flex gap-6 text-white/80">
-                  <a href="https://www.instagram.com" target="_blank">
-                    Instagram
-                  </a>
-                  <a href="https://www.tiktok.com" target="_blank">
-                    TikTok
-                  </a>
-                  <a href="https://www.facebook.com" target="_blank">
-                    Facebook
-                  </a>
+                <div className="mt-4 flex gap-6">
+                  <a href="https://www.instagram.com/tcm_goussainville/" target="_blank">Instagram</a>
+                  <a href="https://www.tiktok.com" target="_blank">TikTok</a>
+                  <a href="https://www.facebook.com/ftcmg/" target="_blank">Facebook</a>
                 </div>
               </div>
             </div>
@@ -197,6 +190,48 @@ export function Header() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+export function SocialRail() {
+  return (
+    <div className="fixed bottom-6 right-6 z-[60] flex flex-col gap-3">
+      <a
+        href="https://www.instagram.com/tcm_goussainville/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Instagram"
+        className="group flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-xl shadow-xl transition-all duration-300 hover:scale-110 hover:bg-[#E4405F]"
+      >
+        <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#062a59] group-hover:text-white" fill="currentColor">
+          <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2a1 1 0 110 2 1 1 0 010-2zm-5 2a6 6 0 110 12 6 6 0 010-12zm0 2a4 4 0 100 8 4 4 0 000-8z"/>
+        </svg>
+      </a>
+
+      <a
+        href="https://www.tiktok.com"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="TikTok"
+        className="group flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-xl shadow-xl transition-all duration-300 hover:scale-110 hover:bg-black"
+      >
+        <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#062a59] group-hover:text-white" fill="currentColor">
+          <path d="M19 8.3a5.7 5.7 0 01-3.3-1V15a5 5 0 11-5-5c.3 0 .6 0 .9.1v2.6a2.5 2.5 0 101.6 2.3V2h2.5a4 4 0 003.3 3.8v2.5z"/>
+        </svg>
+      </a>
+
+      <a
+        href="https://www.facebook.com/ftcmg/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Facebook"
+        className="group flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-xl shadow-xl transition-all duration-300 hover:scale-110 hover:bg-[#1877F2]"
+      >
+        <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#062a59] group-hover:text-white" fill="currentColor">
+          <path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.6 1.6-1.6h1.7V5a22 22 0 00-2.5-.1c-2.5 0-4.2 1.5-4.2 4.4V11H8v3h2.8v8h2.7z"/>
+        </svg>
+      </a>
+    </div>
   );
 }
 
@@ -208,22 +243,13 @@ export function Footer() {
           <Logo />
 
           <p className="mt-6 max-w-sm leading-7 text-white/70">
-            Le tennis comme point de départ. À Goussainville, on joue, on
-            apprend et on avance ensemble.
+            Le tennis comme point de départ. À Goussainville, on joue, on apprend et on avance ensemble.
           </p>
 
           <div className="mt-6 flex gap-5 text-sm">
-            <a href="https://www.instagram.com" className="hover:text-[#72d68b]">
-              Instagram
-            </a>
-
-            <a href="https://www.tiktok.com" className="hover:text-[#72d68b]">
-              TikTok
-            </a>
-
-            <a href="https://www.facebook.com" className="hover:text-[#72d68b]">
-              Facebook
-            </a>
+            <a href="https://www.instagram.com/tcm_goussainville/" className="hover:text-[#72d68b]">Instagram</a>
+            <a href="https://www.tiktok.com" className="hover:text-[#72d68b]">TikTok</a>
+            <a href="https://www.facebook.com/ftcmg/" className="hover:text-[#72d68b]">Facebook</a>
           </div>
         </div>
 
