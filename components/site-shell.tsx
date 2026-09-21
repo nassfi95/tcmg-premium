@@ -17,33 +17,33 @@ const links = [
   ['Boutique', '/boutique'],
 ];
 
-export function Brand({ dark = false }: { dark?: boolean }) {
+function Logo({ dark = false }: { dark?: boolean }) {
   return (
     <Link href="/" className="flex items-center gap-3">
       <Image
         src="/icon.svg"
         alt="Logo TCMG"
-        width={52}
-        height={52}
-        className="rounded-xl"
+        width={56}
+        height={56}
+        className="rounded-2xl shadow-lg"
       />
 
-      <div className="leading-tight">
-        <div
-          className={`font-black text-xl ${
+      <div className="leading-none">
+        <h1
+          className={`text-3xl font-black tracking-[-0.06em] ${
             dark ? 'text-[#062a59]' : 'text-white'
           }`}
         >
           TCMG
-        </div>
+        </h1>
 
-        <div
-          className={`text-[11px] uppercase tracking-[0.18em] ${
+        <p
+          className={`mt-1 text-xs uppercase tracking-[0.28em] ${
             dark ? 'text-slate-500' : 'text-white/70'
           }`}
         >
           Goussainville
-        </div>
+        </p>
       </div>
     </Link>
   );
@@ -54,7 +54,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -70,7 +70,7 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5">
-        <Brand dark={scrolled} />
+        <Logo dark={scrolled} />
 
         <nav
           className={`hidden lg:flex items-center gap-6 text-sm font-semibold ${
@@ -87,7 +87,7 @@ export function Header() {
             href="https://tenup.fft.fr"
             target="_blank"
             rel="noreferrer"
-            className="rounded-full bg-[#2FA84F] px-5 py-3 text-white hover:opacity-90"
+            className="rounded-full bg-[#2FA84F] px-5 py-3 text-white"
           >
             Réserver
           </a>
@@ -127,23 +127,6 @@ export function Header() {
                 {label}
               </Link>
             ))}
-
-            <a
-              href="https://tenup.fft.fr"
-              target="_blank"
-              rel="noreferrer"
-              className="block px-6 py-4 text-[#2FA84F] font-bold"
-            >
-              Réserver un terrain
-            </a>
-
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className="block px-6 py-4 text-[#062a59] font-semibold"
-            >
-              Contact
-            </Link>
           </motion.nav>
         )}
       </AnimatePresence>
@@ -156,26 +139,12 @@ export function Footer() {
     <footer className="bg-[#062a59] text-white px-5 py-16">
       <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-3">
         <div>
-          <Brand />
+          <Logo />
 
           <p className="mt-6 text-white/70 leading-7">
             Le tennis comme point de départ. À Goussainville, on joue,
             on apprend et on avance ensemble.
           </p>
-
-          <div className="mt-6 flex gap-5">
-            <a href="https://instagram.com" className="hover:text-[#72d68b]">
-              Instagram
-            </a>
-
-            <a href="https://tiktok.com" className="hover:text-[#72d68b]">
-              TikTok
-            </a>
-
-            <a href="https://facebook.com" className="hover:text-[#72d68b]">
-              Facebook
-            </a>
-          </div>
         </div>
 
         <div>
@@ -205,7 +174,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto mt-14 max-w-7xl border-t border-white/10 pt-6 flex flex-wrap justify-between gap-3 text-sm text-white/50">
+      <div className="mx-auto mt-14 max-w-7xl border-t border-white/10 pt-6 flex justify-between text-sm text-white/50">
         <span>© 2026 TCMG</span>
         <span>Tennis Club Municipal de Goussainville</span>
       </div>
