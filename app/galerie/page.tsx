@@ -19,12 +19,24 @@ export default function GaleriePage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [selected, setSelected] = useState<Photo | null>(null);
 
-  useEffect(() => {
-    fetch('/api/gallery')
-      .then((r) => r.json())
-      .then((data: AdminData) => setPhotos(data.photos || []))
-      .catch(console.error);
-  }, []);
+ useEffect(() => {
+  async function loadPhotos() {
+    try {
+      const res = await fetch('/api/gallery', {
+        cache: 'no-store',
+      });
+
+      if (!res.ok) throw new Error('Impossible de charger la galerie');
+
+      const data = await res.json();
+      setPhotos(data.photos ?? []);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  loadPhotos();
+}, []);
 
   return (
     <>
