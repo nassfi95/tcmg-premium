@@ -7,7 +7,8 @@ import { Header, Footer } from '@/components/site-shell';
 type Photo = {
   id: string;
   url: string;
-  caption: string;
+  category: string;
+  name: string;
 };
 
 type AdminData = {
@@ -19,9 +20,10 @@ export default function GaleriePage() {
   const [selected, setSelected] = useState<Photo | null>(null);
 
   useEffect(() => {
-    fetch('/api/admin')
+    fetch('/api/admin/data')
       .then((r) => r.json())
-      .then((data: AdminData) => setPhotos(data.photos || []));
+      .then((data: AdminData) => setPhotos(data.photos || []))
+      .catch(console.error);
   }, []);
 
   return (
@@ -29,7 +31,6 @@ export default function GaleriePage() {
       <Header />
 
       <main className="pt-20">
-        {/* Hero */}
         <section className="bg-[#062a59] px-5 py-24 text-white">
           <div className="mx-auto max-w-7xl">
             <p className="text-sm uppercase tracking-[0.3em] text-[#72d68b]">
@@ -46,7 +47,6 @@ export default function GaleriePage() {
           </div>
         </section>
 
-        {/* Galerie */}
         <section className="bg-white px-5 py-20">
           <div className="mx-auto max-w-7xl">
             {photos.length === 0 ? (
@@ -76,13 +76,17 @@ export default function GaleriePage() {
                   >
                     <img
                       src={photo.url}
-                      alt={photo.caption}
+                      alt={photo.name}
                       className="h-72 w-full object-cover transition duration-700 group-hover:scale-110"
                     />
 
                     <div className="p-5">
                       <p className="font-semibold text-[#062a59]">
-                        {photo.caption || 'Photo TCMG'}
+                        {photo.category}
+                      </p>
+
+                      <p className="mt-1 text-sm text-slate-500 truncate">
+                        {photo.name}
                       </p>
                     </div>
                   </motion.button>
@@ -95,7 +99,6 @@ export default function GaleriePage() {
 
       <Footer />
 
-      {/* Visionneuse */}
       {selected && (
         <div
           onClick={() => setSelected(null)}
@@ -107,14 +110,20 @@ export default function GaleriePage() {
           >
             <img
               src={selected.url}
-              alt={selected.caption}
+              alt={selected.name}
               className="max-h-[80vh] w-full object-contain"
             />
 
             <div className="flex items-center justify-between p-5">
-              <p className="font-semibold text-[#062a59]">
-                {selected.caption || 'Photo TCMG'}
-              </p>
+              <div>
+                <p className="font-semibold text-[#062a59]">
+                  {selected.category}
+                </p>
+
+                <p className="text-sm text-slate-500">
+                  {selected.name}
+                </p>
+              </div>
 
               <button
                 onClick={() => setSelected(null)}
