@@ -20,7 +20,7 @@ export default function GaleriePage() {
   const [selected, setSelected] = useState<Photo | null>(null);
 
   useEffect(() => {
-    fetch('/api/admin/data')
+    fetch('/api/gallery')
       .then((r) => r.json())
       .then((data: AdminData) => setPhotos(data.photos || []))
       .catch(console.error);
