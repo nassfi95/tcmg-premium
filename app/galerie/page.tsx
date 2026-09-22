@@ -37,7 +37,7 @@ export default function GaleriePage() {
 
   loadPhotos();
 }, []);
-
+console.log('Photos chargées :', photos);
   return (
     <>
       <Header />
