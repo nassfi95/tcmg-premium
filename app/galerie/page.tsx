@@ -1,24 +1,29 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { Header, Footer } from '@/components/site-shell';
+import { motion } from 'framer-motion';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+type Photo = {
+  id: string;
+  url: string;
+  category: string;
+  name: string;
+};
 
-async function getPhotos() {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
+export default function GaleriePage() {
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [selected, setSelected] = useState<Photo | null>(null);
 
-  const res = await fetch(`${baseUrl}/api/gallery`, {
-    cache: 'no-store',
-  });
+  useEffect(() => {
+    async function load() {
+      const res = await fetch('/api/gallery', { cache: 'no-store' });
+      const data = await res.json();
+      setPhotos(data.photos || []);
+    }
 
-  if (!res.ok) return { photos: [] };
-
-  return res.json();
-}
-
-export default async function GaleriePage() {
-  const { photos } = await getPhotos();
+    load();
+  }, []);
 
   return (
     <>
@@ -34,25 +39,23 @@ export default async function GaleriePage() {
             <h1 className="mt-4 text-5xl font-black md:text-7xl">
               Les meilleurs moments du club.
             </h1>
-
-            <p className="mt-6 max-w-2xl text-lg text-white/75">
-              Tournois, entraînements, Fête le Mur et événements du TCMG.
-            </p>
           </div>
         </section>
 
         <section className="bg-white px-5 py-20">
           <div className="mx-auto max-w-7xl">
             {photos.length === 0 ? (
-              <div className="rounded-3xl border border-dashed border-slate-300 p-14 text-center">
-                Aucune photo.
-              </div>
+              <p>Aucune photo.</p>
             ) : (
               <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                {photos.map((photo: any) => (
-                  <div
+                {photos.map((photo, i) => (
+                  <motion.button
                     key={photo.id}
-                    className="overflow-hidden rounded-3xl bg-white shadow-xl"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.03 }}
+                    onClick={() => setSelected(photo)}
+                    className="overflow-hidden rounded-3xl shadow-xl text-left"
                   >
                     <img
                       src={photo.url}
@@ -61,15 +64,11 @@ export default async function GaleriePage() {
                     />
 
                     <div className="p-5">
-                      <p className="font-semibold text-[#062a59]">
+                      <p className="font-bold text-[#062a59]">
                         {photo.category}
                       </p>
-
-                      <p className="text-sm text-slate-500">
-                        {photo.name}
-                      </p>
                     </div>
-                  </div>
+                  </motion.button>
                 ))}
               </div>
             )}
@@ -78,6 +77,19 @@ export default async function GaleriePage() {
       </main>
 
       <Footer />
+
+      {selected && (
+        <div
+          onClick={() => setSelected(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-5"
+        >
+          <img
+            src={selected.url}
+            alt={selected.name}
+            className="max-h-[90vh] max-w-[90vw] rounded-2xl"
+          />
+        </div>
+      )}
     </>
   );
 }
