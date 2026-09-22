@@ -7,7 +7,8 @@ import { Header, Footer } from '@/components/site-shell';
 type Photo = {
   id: string;
   url: string;
-  caption: string;
+  category: string;
+  name: string;
 };
 
 type AdminData = {
@@ -28,15 +29,17 @@ export default function AdminGalerie() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch('/api/admin')
+    fetch('/api/admin/data')
       .then((r) => r.json())
-      .then(setData);
+      .then(setData)
+      .catch(console.error);
   }, []);
 
   async function upload(file: File) {
     try {
       setUploading(true);
 
+      // Upload Blob
       const fd = new FormData();
       fd.append('file', file);
 
@@ -57,13 +60,15 @@ export default function AdminGalerie() {
           {
             id: crypto.randomUUID(),
             url: uploadJson.url,
-            caption,
+            category: caption || 'Galerie',
+            name: file.name,
           },
           ...data.photos,
         ],
       };
 
-      const saveRes = await fetch('/api/admin', {
+      // Sauvegarde KV
+      const saveRes = await fetch('/api/admin/data', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -77,10 +82,14 @@ export default function AdminGalerie() {
 
       setData(nextData);
       setCaption('');
-      if (inputRef.current) inputRef.current.value = '';
-      alert('Photo publiée !');
+
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
+
+      alert('Photo publiée avec succès.');
     } catch (e: any) {
-      alert(e.message || 'Erreur.');
+      alert(e.message || 'Une erreur est survenue.');
     } finally {
       setUploading(false);
     }
@@ -98,6 +107,7 @@ export default function AdminGalerie() {
             </Link>
 
             <h1 className="mt-4 text-5xl font-black">Galerie</h1>
+
             <p className="mt-3 text-white/75">
               Les photos ajoutées ici apparaîtront automatiquement sur le site.
             </p>
@@ -110,7 +120,7 @@ export default function AdminGalerie() {
               <input
                 value={caption}
                 onChange={(e) => setCaption(e.target.value)}
-                placeholder="Légende de la photo"
+                placeholder="Catégorie ou légende"
                 className="w-full rounded-2xl border border-slate-200 px-5 py-4"
               />
 
@@ -123,7 +133,7 @@ export default function AdminGalerie() {
                   </p>
 
                   <p className="text-sm text-slate-500">
-                    Depuis votre iPhone
+                    Depuis votre téléphone ou ordinateur
                   </p>
                 </div>
 
@@ -148,17 +158,27 @@ export default function AdminGalerie() {
                 >
                   <img
                     src={photo.url}
-                    alt={photo.caption}
+                    alt={photo.name}
                     className="h-64 w-full object-cover"
                   />
 
                   <div className="p-4">
                     <p className="font-semibold text-[#062a59]">
-                      {photo.caption}
+                      {photo.category}
+                    </p>
+
+                    <p className="mt-1 text-sm text-slate-500 truncate">
+                      {photo.name}
                     </p>
                   </div>
                 </div>
               ))}
+
+              {data.photos.length === 0 && (
+                <div className="col-span-full rounded-3xl border border-dashed border-slate-300 p-10 text-center text-slate-500">
+                  Aucune photo publiée pour le moment.
+                </div>
+              )}
             </div>
           </div>
         </section>
