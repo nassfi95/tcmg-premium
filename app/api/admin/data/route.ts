@@ -1,19 +1,20 @@
 import { NextResponse } from 'next/server';
-import {
-  readAdminData,
-  writeAdminData,
-  type AdminData,
-} from '@/lib/admin-store';
-
-export const dynamic = 'force-dynamic';
+import { readAdminData, writeAdminData } from '@/lib/admin-store';
 
 export async function GET() {
-  const data = await readAdminData();
-  return NextResponse.json(data);
+  return NextResponse.json(await readAdminData());
 }
 
 export async function PUT(request: Request) {
-  const body = (await request.json()) as AdminData;
-  const data = await writeAdminData(body);
-  return NextResponse.json(data);
+  try {
+    const data = await request.json();
+    await writeAdminData(data);
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json(
+      { error: "Échec de l'enregistrement." },
+      { status: 500 }
+    );
+  }
 }
